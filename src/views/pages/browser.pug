@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Browser
+        link(rel="stylesheet", href="css/styles.css")
+    body
+        header
+            #user-info.user-info
+            p#welcome
+            button#btn-logout Log out
+        nav#nav-bar.nav-bar
+            ul.nav-bar__ul
+                li.nav-bar__item: a(href="./browser.html") Browser
+                li.nav-bar__item: a(href="./bookmarks.html") Bookmarks
+        main
+            div
+                form#browser.form                
+                    input.form__input(type="text" placeholder="Spiderman")
+                    input(type="button" value="Go") 
+            #browser-list
+                p Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi reprehenderit sapiente eligendi numquam nam similique ratione ipsum doloremque est consectetur, sed quos, dolor porro. Neque eum nihil molestias nemo suscipit.
+                .movie
+        script(src="js/logout.js")
