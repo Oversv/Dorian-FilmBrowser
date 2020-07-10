@@ -46,3 +46,25 @@ body{
     padding: 5px 10px;
     cursor: pointer;
 }
+
+
+/** Browser **/
+.film-list{
+    margin: 0 10px;
+}
+.film-list__item{
+    display: grid;
+    grid-template-columns: 100px auto 100px;
+    background-color: aqua;
+    margin-bottom: 5px;
+}
+.film-list__item--not-found{
+    background-color: brown;
+    text-align: center;
+}
+.film-list__item-type{     
+    text-transform: capitalize;
+}
+.film-list__item-title{
+    background-color: brown;
+}

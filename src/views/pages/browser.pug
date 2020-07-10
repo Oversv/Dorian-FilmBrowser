@@ -17,9 +17,8 @@ html(lang="en")
         main
             div
                 form#browser.form                
-                    input.form__input(type="text" placeholder="Spiderman")
-                    input(type="button" value="Go") 
-            #browser-list
-                p Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi reprehenderit sapiente eligendi numquam nam similique ratione ipsum doloremque est consectetur, sed quos, dolor porro. Neque eum nihil molestias nemo suscipit.
-                .movie
+                    input#film.form__input(type="text" placeholder="Spiderman")
+                    input(type="submit" value="Search") 
+            #filmList.film-list 
         script(src="js/logout.js")
+        script(src="js/browser.js")
