@@ -3,10 +3,8 @@
 var login = document.getElementById('login');
 var user = {
   id: "",
-  //----Revisar si hace falta
   username: "",
   password: "",
-  //----Hacer el hash
   bookmarks: []
 };
 login.addEventListener('submit', function (e) {
@@ -24,14 +22,19 @@ login.addEventListener('submit', function (e) {
       console.log("La contraseña tiene que tener 4 caracteres o más");
     }
   } else {
-    //Generar id aquí
+    user.id = id();
     user.username = username;
     user.password = password;
     addUserLocalStorage(user);
     addUserSessionStorage(user);
     login.reset();
   }
-}); //Add an user to localstorage
+}); //Id generator
+
+var id = function id() {
+  return Date.now() + Math.floor(Math.random() * 1000);
+}; //Add an user to localstorage
+
 
 var addUserLocalStorage = function addUserLocalStorage(user) {
   var data = JSON.parse(localStorage.getItem("users"));

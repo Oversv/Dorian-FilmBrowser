@@ -1,9 +1,9 @@
 const login = document.getElementById('login')
 
 const user = {
-    id: "", //----Revisar si hace falta
+    id: "",
     username: "",
-    password: "", //----Hacer el hash
+    password: "",
     bookmarks: []
 }
 
@@ -23,7 +23,7 @@ login.addEventListener('submit', e =>{
         }         
         
     }else{        
-        //Generar id aquí
+        user.id = id()
         user.username = username
         user.password = password  
        
@@ -32,6 +32,11 @@ login.addEventListener('submit', e =>{
         login.reset()
     }    
 })
+
+//Id generator
+const id = () =>{
+    return Date.now()+(Math.floor(Math.random()*1000))
+}
 
 //Add an user to localstorage
 const addUserLocalStorage = user =>{
