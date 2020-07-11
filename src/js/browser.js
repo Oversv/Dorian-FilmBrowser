@@ -1,4 +1,7 @@
 const form = document.getElementById('browser')
+const filmList = document.getElementById('filmList')
+
+let arrFilmList = [] //This array keeps the search data
 
 form.addEventListener('submit', (e)=>{
     e.preventDefault()
@@ -15,11 +18,12 @@ form.addEventListener('submit', (e)=>{
         .then(data => {
 
             const fragment = document.createDocumentFragment()
-            const filmList = document.getElementById('filmList')
+            
             filmList.innerHTML= ''
-           
+         
             if(data.Response === 'True'){               
-
+                arrFilmList = data.Search
+                //console.log(arrFilmList)//////////////////////////
                 data.Search.forEach(e => {
                     const div = document.createElement('div')
                     div.setAttribute('class', 'film-list__item')
@@ -27,7 +31,7 @@ form.addEventListener('submit', (e)=>{
                     div.innerHTML+=`
                         <p class="film-list__item-type">${e.Type}</p>
                         <p class="film-list__item-title">${e.Title}</p>
-                        <p>ADD</p>
+                        <button data-id="${e.imdbID}">ADD</button>
                     `
     
                     fragment.appendChild(div)                   
@@ -49,11 +53,29 @@ form.addEventListener('submit', (e)=>{
         form.reset()
         //------Revisar el tema del placeholder, no me convence mucho
     }
-    
-
-
-
-
-
-
 })
+
+filmList.addEventListener('click', e =>{
+   if(e.target.tagName === 'BUTTON'){
+       const id = e.target.getAttribute("data-id")
+       addBookmark(id)
+   }
+})
+
+const addBookmark = (id) =>{
+   
+    const film = arrFilmList.filter(e => e.imdbID === id)  //Get the film of the array
+    const user = JSON.parse(sessionStorage.getItem('user'))  //Get the user of sessionStorage
+    const allLocalStorage = JSON.parse(localStorage.users).filter(e => e.id !== user.id);  
+
+    if(!user.bookmarks.some(e => e.imdbID === id)){
+    
+        //Save data in sessionStrorage
+        user.bookmarks.push(film[0])    
+        sessionStorage.setItem('user', JSON.stringify(user))
+
+        //Save data in localStrorage
+        allLocalStorage.push(user)
+        localStorage.setItem('users', JSON.stringify(allLocalStorage))
+    }
+}

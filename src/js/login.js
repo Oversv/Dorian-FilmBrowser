@@ -23,12 +23,13 @@ login.addEventListener('submit', e =>{
         }         
         
     }else{        
-        user.id = id()
+       
         user.username = username
         user.password = password  
        
         addUserLocalStorage(user)
-        addUserSessionStorage(user)
+        addUserSessionStorage(username, password)
+     
         login.reset()
     }    
 })
@@ -40,12 +41,13 @@ const id = () =>{
 
 //Add an user to localstorage
 const addUserLocalStorage = user =>{
-
+    
     let data = JSON.parse(localStorage.getItem("users"))   
 
-    let userExist = checkUser(data, user)   
+    let userExist = checkUser(data, user)
     
-    if(!userExist){       
+    if(!userExist){     
+        user.id = id()  
 
         if(data === null){
             data = [user]               
@@ -54,12 +56,18 @@ const addUserLocalStorage = user =>{
         } 
     
         localStorage.setItem("users", JSON.stringify(data))        
-    }    
+    }      
 }
 
-const addUserSessionStorage = (user)=>{
-    sessionStorage.setItem('user', JSON.stringify(user) )
+const addUserSessionStorage = (username, password)=>{       
+
+    let userLocalStorage = JSON.parse(localStorage.getItem('users')).find(e => {
+        return e.username === username && e.password === password
+     })
+
+    sessionStorage.setItem('user', JSON.stringify(userLocalStorage) )
 }
+
 //Return true if the user and password are equal to other user in the localstorage
 const checkUser = (storage, user) => {   
     let result = false

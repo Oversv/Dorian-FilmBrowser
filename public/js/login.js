@@ -22,11 +22,10 @@ login.addEventListener('submit', function (e) {
       console.log("La contraseña tiene que tener 4 caracteres o más");
     }
   } else {
-    user.id = id();
     user.username = username;
     user.password = password;
     addUserLocalStorage(user);
-    addUserSessionStorage(user);
+    addUserSessionStorage(username, password);
     login.reset();
   }
 }); //Id generator
@@ -41,6 +40,8 @@ var addUserLocalStorage = function addUserLocalStorage(user) {
   var userExist = checkUser(data, user);
 
   if (!userExist) {
+    user.id = id();
+
     if (data === null) {
       data = [user];
     } else {
@@ -51,8 +52,11 @@ var addUserLocalStorage = function addUserLocalStorage(user) {
   }
 };
 
-var addUserSessionStorage = function addUserSessionStorage(user) {
-  sessionStorage.setItem('user', JSON.stringify(user));
+var addUserSessionStorage = function addUserSessionStorage(username, password) {
+  var userLocalStorage = JSON.parse(localStorage.getItem('users')).find(function (e) {
+    return e.username === username && e.password === password;
+  });
+  sessionStorage.setItem('user', JSON.stringify(userLocalStorage));
 }; //Return true if the user and password are equal to other user in the localstorage
 
 
