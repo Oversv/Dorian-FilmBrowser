@@ -22,12 +22,11 @@ form.addEventListener('submit', function (e) {
       filmList.innerHTML = '';
 
       if (data.Response === 'True') {
-        arrFilmList = data.Search; //console.log(arrFilmList)//////////////////////////
-
+        arrFilmList = data.Search;
         data.Search.forEach(function (e) {
           var div = document.createElement('div');
           div.setAttribute('class', 'film-list__item');
-          div.innerHTML += "\n                        <p class=\"film-list__item-type\">".concat(e.Type, "</p>\n                        <p class=\"film-list__item-title\">").concat(e.Title, "</p>\n                        <button data-id=\"").concat(e.imdbID, "\">ADD</button>\n                    ");
+          div.innerHTML += "\n                        <p class=\"film-list__item-type\">".concat(e.Type, "</p>\n                        <p class=\"film-list__item-title\" data-modal=\"").concat(e.imdbID, "\">").concat(e.Title, "</p>\n                        <button data-id=\"").concat(e.imdbID, "\">ADD</button>\n                    ");
           fragment.appendChild(div);
         });
       } else {
@@ -48,6 +47,10 @@ filmList.addEventListener('click', function (e) {
   if (e.target.tagName === 'BUTTON') {
     var id = e.target.getAttribute("data-id");
     addBookmark(id);
+  }
+
+  if (e.target.getAttribute("data-modal")) {
+    createModal(e);
   }
 });
 
@@ -72,4 +75,27 @@ var addBookmark = function addBookmark(id) {
     allLocalStorage.push(user);
     localStorage.setItem('users', JSON.stringify(allLocalStorage));
   }
-};
+}; //Modal
+
+
+var createModal = function createModal(e) {
+  var modal = document.getElementById('modal');
+  var id = e.target.getAttribute('data-modal');
+  var film = arrFilmList.filter(function (e) {
+    return e.imdbID === id;
+  });
+  modal.innerHTML = '';
+  var div = document.createElement('div');
+  div.classList.add('modal__item');
+  div.innerHTML = "\n        <div class=\"modal__close\" id=\"modal-close\">+</div>\n        <div class=\"modal__img-container\">\n            <img class=\"modal__img\" src=\"".concat(film[0].Poster, "\" alt=\"").concat(film[0].Title, "\"/>\n        </div>\n        <div class=\"modal__info\">\n            <p class=\"modal_title\">").concat(film[0].Title, "</p>\n            <p class=\"modal_year\">").concat(film[0].Year, "</p>\n        </div>\n    </div>");
+  modal.appendChild(div);
+  modal.classList.add('modal--show');
+}; //Close Modal
+
+
+var modal = document.getElementById('modal');
+modal.addEventListener('click', function (e) {
+  if (e.target.getAttribute('id') === 'modal-close') {
+    modal.classList.remove('modal--show');
+  }
+});

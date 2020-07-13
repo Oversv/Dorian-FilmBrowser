@@ -1,6 +1,5 @@
 const form = document.getElementById('browser')
 const filmList = document.getElementById('filmList')
-
 let arrFilmList = [] //This array keeps the search data
 
 form.addEventListener('submit', (e)=>{
@@ -23,17 +22,16 @@ form.addEventListener('submit', (e)=>{
          
             if(data.Response === 'True'){               
                 arrFilmList = data.Search
-                //console.log(arrFilmList)//////////////////////////
+              
                 data.Search.forEach(e => {
                     const div = document.createElement('div')
                     div.setAttribute('class', 'film-list__item')
                     
                     div.innerHTML+=`
                         <p class="film-list__item-type">${e.Type}</p>
-                        <p class="film-list__item-title">${e.Title}</p>
+                        <p class="film-list__item-title" data-modal="${e.imdbID}">${e.Title}</p>
                         <button data-id="${e.imdbID}">ADD</button>
-                    `
-    
+                    `    
                     fragment.appendChild(div)                   
                 })
                 
@@ -60,6 +58,10 @@ filmList.addEventListener('click', e =>{
        const id = e.target.getAttribute("data-id")
        addBookmark(id)
    }
+
+   if(e.target.getAttribute("data-modal")){      
+       createModal(e)
+   }
 })
 
 const addBookmark = (id) =>{
@@ -79,3 +81,37 @@ const addBookmark = (id) =>{
         localStorage.setItem('users', JSON.stringify(allLocalStorage))
     }
 }
+
+//Modal
+const createModal = (e) =>{
+    const modal = document.getElementById('modal')
+    const id = e.target.getAttribute('data-modal')
+    const film = arrFilmList.filter(e => e.imdbID === id)
+
+    modal.innerHTML = ''
+
+    const div = document.createElement('div')
+    div.classList.add('modal__item')
+    div.innerHTML = `
+        <div class="modal__close" id="modal-close">+</div>
+        <div class="modal__img-container">
+            <img class="modal__img" src="${film[0].Poster}" alt="${film[0].Title}"/>
+        </div>
+        <div class="modal__info">
+            <p class="modal_title">${film[0].Title}</p>
+            <p class="modal_year">${film[0].Year}</p>
+        </div>
+    </div>`
+
+    modal.appendChild(div)
+    modal.classList.add('modal--show')
+}
+
+//Close Modal
+const modal = document.getElementById('modal')
+
+modal.addEventListener('click', e =>{
+    if(e.target.getAttribute('id') === 'modal-close'){
+        modal.classList.remove('modal--show')
+    }
+})
