@@ -5,10 +5,10 @@ html(lang="en")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Movie Browser
         link(rel="stylesheet", href="css/styles.css")
-    body
+    body.index-body
         header.header        
             form#login.form(action="./browser.html")
                 input#username.form__input(type="text" placeholder="Username" minlength="4")
                 input#password.form__input(type="password" placeholder="Password" minlength="4" autocomplete="off")
-                input(type="submit" value="Log in")
+                input.forn__submit(type="submit" value="Sign in")
         script(src="js/login.js")

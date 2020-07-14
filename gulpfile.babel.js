@@ -112,7 +112,7 @@ gulp.task('imgmin', () => {
       .src('./src/images/*')
       .pipe(plumber()) 
       .pipe(imagemin([
-          imagemin.gifsicle({ interlaced: true }), //No funciona
+          //imagemin.gifsicle({ interlaced: true }), //No funciona
           imagemin.mozjpeg({ quality: 30, progressive: true }),
           imagemin.optipng({ optimizationLevel: 1 })
         ])
