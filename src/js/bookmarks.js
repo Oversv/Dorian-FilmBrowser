@@ -11,20 +11,20 @@ const showFilms = () =>{
 
     user.bookmarks.sort((a, b) => (a.Title > b.Title) ? 1 : -1).forEach(e => {
         const div = document.createElement('div')
+        div.classList.add('bookmarks__item')
         div.innerHTML+=`
-            <div>
-                <img src="${e.Poster}" alt="${e.Title}">
+            <div class="bookmarks__img-container">
+                <img class="bookmarks__img" src="${e.Poster}" alt="${e.Title}" onerror="this.src='./images/not-found.png';">
             </div>
-            <div>
+            <div class="bookmarks__info">
                 <p>${e.Title}<p/>
                 <p>Year: ${e.Year}<p/>
                 <p>Type: ${e.Type}<p/>
             </div>
             <div>
-                <button onclick="deleteBookmark('${e.imdbID}')">Delete</button>
+                <button class="btn--small" onclick="deleteBookmark('${e.imdbID}')">Delete</button>
             </div>
         `
-
         fragment.appendChild(div)
     });
 

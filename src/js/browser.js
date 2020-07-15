@@ -94,7 +94,7 @@ const createModal = (e) =>{
     div.innerHTML = `
         <div class="modal__close" id="modal-close">+</div>
         <div class="modal__img-container">
-            <img class="modal__img" src="${film[0].Poster}" alt="${film[0].Title}"/>
+            <img class="modal__img" src="${film[0].Poster}" alt="${film[0].Title}" onerror="this.src='./images/not-found.png';"/>
         </div>
         <div class="modal__info">
             <p class="modal__paragraph">${film[0].Title}</p>
@@ -110,7 +110,6 @@ const createModal = (e) =>{
 
 //Close Modal
 const modal = document.getElementById('modal')
-
 
 modal.addEventListener('click', e =>{
     const btnAdd = document.getElementById('add')

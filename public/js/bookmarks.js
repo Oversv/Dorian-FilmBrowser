@@ -13,7 +13,8 @@ var showFilms = function showFilms() {
     return a.Title > b.Title ? 1 : -1;
   }).forEach(function (e) {
     var div = document.createElement('div');
-    div.innerHTML += "\n            <div>\n                <img src=\"".concat(e.Poster, "\" alt=\"").concat(e.Title, "\">\n            </div>\n            <div>\n                <p>").concat(e.Title, "<p/>\n                <p>Year: ").concat(e.Year, "<p/>\n                <p>Type: ").concat(e.Type, "<p/>\n            </div>\n            <div>\n                <button onclick=\"deleteBookmark('").concat(e.imdbID, "')\">Delete</button>\n            </div>\n        ");
+    div.classList.add('bookmarks__item');
+    div.innerHTML += "\n            <div class=\"bookmarks__img-container\">\n                <img class=\"bookmarks__img\" src=\"".concat(e.Poster, "\" alt=\"").concat(e.Title, "\" onerror=\"this.src='./images/not-found.png';\">\n            </div>\n            <div class=\"bookmarks__info\">\n                <p>").concat(e.Title, "<p/>\n                <p>Year: ").concat(e.Year, "<p/>\n                <p>Type: ").concat(e.Type, "<p/>\n            </div>\n            <div>\n                <button class=\"btn--small\" onclick=\"deleteBookmark('").concat(e.imdbID, "')\">Delete</button>\n            </div>\n        ");
     fragment.appendChild(div);
   });
   bookmarksContainer.appendChild(fragment);

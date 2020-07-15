@@ -8,12 +8,12 @@ html(lang="en")
     body
         header.header--noIndex           
             p#welcome.welcome
-            button#btn-logout.btn--header Log out
+            button#btn-logout.btn--small Log out
         nav#nav-bar.nav-bar
             ul.nav-bar__ul
                 li.nav-bar__item: a(href="/browser.html") Browser
                 li.nav-bar__item: a(href="./bookmarks.html") Bookmarks
         main
-            #bookmarks                
+            #bookmarks.bookmarks               
         script(src="js/logout.js")
         script(src="js/bookmarks.js")
