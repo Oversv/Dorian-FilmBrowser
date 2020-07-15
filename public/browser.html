@@ -4,13 +4,12 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Browser</title>
-    <link rel="stylesheet" href="css/styles.css?t=1594719723988"/>
+    <link rel="stylesheet" href="css/styles.css?t=1594726544737"/>
   </head>
   <body>
-    <header>
-      <div class="user-info" id="user-info"></div>
-      <p id="welcome"></p>
-      <button id="btn-logout">Log out</button>
+    <header class="header--noIndex">          
+      <p class="welcome" id="welcome"></p>
+      <button class="btn--small" id="btn-logout">Log out</button>
     </header>
     <nav class="nav-bar" id="nav-bar">
       <ul class="nav-bar__ul">
@@ -18,17 +17,15 @@
         <li class="nav-bar__item"><a href="./bookmarks.html">Bookmarks</a></li>
       </ul>
     </nav>
-    <main>
-      <div>
-        <form class="form" id="browser">               
-          <input class="form__input" id="film" type="text" placeholder="Spiderman"/>
-          <input type="submit" value="Search"/>
-        </form>
-      </div>
+    <main>           
+      <form class="form-browser" id="browser">              
+        <input class="form-browser__input" id="film" type="text" placeholder="Spiderman"/>
+        <input class="btn--small" type="submit" value="Search"/>
+      </form>
       <div class="film-list" id="filmList">        </div>
       <div class="modal" id="modal">                   </div>
     </main>
-    <script src="js/logout.js?t=1594719723988"></script>
-    <script src="js/browser.js?t=1594719723988"></script>
+    <script src="js/logout.js?t=1594726544737"></script>
+    <script src="js/browser.js?t=1594726544737"></script>
   </body>
 </html>

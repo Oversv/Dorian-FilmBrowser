@@ -6,19 +6,17 @@ html(lang="en")
         title Browser
         link(rel="stylesheet", href="css/styles.css")
     body
-        header
-            #user-info.user-info
-            p#welcome
-            button#btn-logout Log out
+        header.header--noIndex           
+            p#welcome.welcome
+            button#btn-logout.btn--small Log out
         nav#nav-bar.nav-bar
             ul.nav-bar__ul
                 li.nav-bar__item: a(href="./browser.html") Browser
                 li.nav-bar__item: a(href="./bookmarks.html") Bookmarks
-        main
-            div
-                form#browser.form                
-                    input#film.form__input(type="text" placeholder="Spiderman")
-                    input(type="submit" value="Search") 
+        main            
+            form#browser.form-browser               
+                input#film.form-browser__input(type="text" placeholder="Spiderman")
+                input.btn--small(type="submit" value="Search") 
             #filmList.film-list         
             #modal.modal                    
         script(src="js/logout.js")

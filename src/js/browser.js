@@ -6,6 +6,8 @@ form.addEventListener('submit', (e)=>{
     e.preventDefault()
     
     const film = document.getElementById('film').value.trim()
+    const user = JSON.parse(sessionStorage.getItem('user'))
+    let added = false
     
     if(film.length === 0){
         //------Mensaje de error
@@ -26,11 +28,11 @@ form.addEventListener('submit', (e)=>{
                 data.Search.forEach(e => {
                     const div = document.createElement('div')
                     div.setAttribute('class', 'film-list__item')
+                    added = user.bookmarks.some(ele =>ele.imdbID.includes(e.imdbID))
                     
-                    div.innerHTML+=`
-                        <p class="film-list__item-type">${e.Type}</p>
-                        <p class="film-list__item-title" data-modal="${e.imdbID}">${e.Title}</p>
-                        <button data-id="${e.imdbID}">ADD</button>
+                    div.innerHTML+=`                       
+                        <p class="film-list__title" data-modal="${e.imdbID}">${e.Title}</p>
+                        <button class="film-list__add-bookmark btn--small ${(added) ? 'added': ""}" onclick="addBookmark('${e.imdbID}')">${(added)? 'ADDED':'ADD'}</button>
                     `    
                     fragment.appendChild(div)                   
                 })
@@ -54,10 +56,6 @@ form.addEventListener('submit', (e)=>{
 })
 
 filmList.addEventListener('click', e =>{
-   if(e.target.tagName === 'BUTTON'){
-       const id = e.target.getAttribute("data-id")
-       addBookmark(id)
-   }
 
    if(e.target.getAttribute("data-modal")){      
        createModal(e)
@@ -65,11 +63,11 @@ filmList.addEventListener('click', e =>{
 })
 
 const addBookmark = (id) =>{
-   
+  
     const film = arrFilmList.filter(e => e.imdbID === id)  //Get the film of the array
     const user = JSON.parse(sessionStorage.getItem('user'))  //Get the user of sessionStorage
     const allLocalStorage = JSON.parse(localStorage.users).filter(e => e.id !== user.id);  
-
+       
     if(!user.bookmarks.some(e => e.imdbID === id)){
     
         //Save data in sessionStrorage
@@ -79,14 +77,15 @@ const addBookmark = (id) =>{
         //Save data in localStrorage
         allLocalStorage.push(user)
         localStorage.setItem('users', JSON.stringify(allLocalStorage))
-    }
+    }    
 }
 
 //Modal
 const createModal = (e) =>{
     const modal = document.getElementById('modal')
     const id = e.target.getAttribute('data-modal')
-    const film = arrFilmList.filter(e => e.imdbID === id)
+    const film = arrFilmList.filter(e => e.imdbID === id)    
+    const added = user.bookmarks.some(ele =>ele.imdbID.includes(id))
 
     modal.innerHTML = ''
 
@@ -98,8 +97,10 @@ const createModal = (e) =>{
             <img class="modal__img" src="${film[0].Poster}" alt="${film[0].Title}"/>
         </div>
         <div class="modal__info">
-            <p class="modal_title">${film[0].Title}</p>
-            <p class="modal_year">${film[0].Year}</p>
+            <p class="modal__paragraph">${film[0].Title}</p>
+            <p class="modal__paragraph">Type: ${film[0].Type}</p>
+            <p class="modal__paragraph">Year: ${film[0].Year}</p>
+            <button id="add" class="film-list__add-bookmark btn--small ${(added) ? 'added': ''}" onclick="addBookmark('${film[0].imdbID}')">${(added) ? 'ADDED': 'ADD'}</button>
         </div>
     </div>`
 
@@ -110,8 +111,16 @@ const createModal = (e) =>{
 //Close Modal
 const modal = document.getElementById('modal')
 
+
 modal.addEventListener('click', e =>{
+    const btnAdd = document.getElementById('add')
+
     if(e.target.getAttribute('id') === 'modal-close'){
         modal.classList.remove('modal--show')
+    }
+    if(e.target.getAttribute('id') === 'add'){
+        btnAdd.classList.add('added')
+        console.log(btnAdd)
+        btnAdd.textContent = 'ADDED'
     }
 })

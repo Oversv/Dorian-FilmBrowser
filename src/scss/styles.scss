@@ -9,6 +9,15 @@
 body{
     margin:0
 }
+a{
+    text-decoration: none;
+    &:visited{
+        color: inherit;
+    }
+}
+main{  
+    min-height: 100vh;
+}
 
 //Index
 .index-body{
@@ -45,27 +54,49 @@ body{
         color: $base;
     }  
 }
-.forn__submit{    
+.btn{    //Cambiar de sitio
     margin-top: 15px;
     width: 160px;
     height: 30px;
     background-color: $contrast-one;
     color: $base;
     font-weight: bold;
-    border-radius: 2px;  
+    border-radius: 2px; 
+}
+.btn--small{
+    width: 80px;
+    height: 30px;
+    background-color: $contrast-one;
+    color: $base;
+    font-weight: bold;
+    border-radius: 2px; 
+
+}
+.added{
+    background-color: green;
 }
 
-//
-.user-info{
-    display: flex;
+//Header all pages except index
+.header--noIndex{
+    display: flex;   
     justify-content: space-around;
-    background-color: aquamarine;
-} 
+    align-items: center;
+    background-color: $base; 
+    height: 50px;      
+}
+.welcome{
+    color: $base-two;
+    font-weight: bold;
+}
 .nav-bar{    
-    background-color: burlywood;
+    background-color: $contrast-one;
+    color: $base;
 }
 .nav-bar__ul{   
-    display: flex;    
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-weight: bold;    
     list-style: none;
     margin: 0;
     padding: 0;    
@@ -75,74 +106,110 @@ body{
     cursor: pointer;
 }
 
-
 /** Browser **/
+.form-browser{
+    padding: 10px 0;
+    text-align: center;
+}
+.form-browser__input{
+    width: 160px;
+    height: 30px;    
+    padding-left: 5px;
+    margin: 5px;   
+    background-color: $contrast-one;
+    color: $base;
+    outline: none;
+    border-radius: 2px;  
+    &::placeholder{
+        color: $base;
+    }  
+}
 .film-list{
-    margin: 0 10px;
+    margin-left: auto;
+    margin-right: auto;  
+    max-width: 750px;
+
 }
 .film-list__item{
     display: grid;
-    grid-template-columns: 100px auto 100px;
-    background-color: aqua;
-    margin-bottom: 5px;
+    grid-template-columns: auto 100px;    
+    margin-bottom: 10px;
+    padding: 5px;  
+    background-color: $base-two;
+    border-radius: 4px;
 }
 .film-list__item--not-found{
-    background-color: brown;
     text-align: center;
+    background-color: $base-two;
+    padding: 5px;  
 }
-.film-list__item-type{     
-    text-transform: capitalize;
-}
-.film-list__item-title{
-    background-color: brown;
+.film-list__title{
+    padding-left: 15px;
+    margin: 0;
     cursor: pointer;
+}
+.film-list__add-bookmark{
+    align-self: center;
+    justify-self: center;    
 }
 
 //Modal
-
 .modal{
     position: fixed;
     top: 0;
-    width: 100%;
-    height: 100%;
-    display: flex; //Cambiar a flex
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0,0,0,0.7);//Usar rgba para poder usar el opacity 1 en el hijo
+    background-color: rgba(0,0,0,0.7);
     transform: scale(0);
+    transition: transform .3s;
     z-index: 100;
 
+    &__item{
+        width: 350px;
+        height: 450px;
+        background-color: $base;
+        opacity: 1;    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+        border: 3px solid $contrast-one;
+        border-radius: 8px; 
+    }
+
+    &__img-container,
+    &__info{
+        width: 250px;
+        height: 250px;
+        text-align: center;
+    }
+    &__img{
+        max-width: 100%;
+        max-height: 100%;        
+    }
+    &__info{
+        margin-top: 20px;
+        text-align: center;
+        color: $base-two;  
+    }
+    &__paragraph{        
+        margin: 5px;
+    }
+    &__close{
+        position: absolute;
+        font-size: 30px;
+        top: 0;
+        right: 10px;
+        transform: rotate(45deg);
+        color: $contrast-one;
+        cursor: pointer;        
+    }
     &--show{
         transform: scale(1);
     }
-}
-.modal__item{
-    width: 300px;
-    height: 350px;
-    background-color: white;
-    opacity: 1;    
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    position: relative; //Para ajustar la X de cerrar
-  
-}
-.modal__img-container,
-.modal__info{ 
-    width: 200px;
-    height: 200px;
-    text-align: center;
-}
-.modal__img{
-    max-width: 100%;
-    max-height: 100%;
-}
-.modal__close{
-    position: absolute;
-    font-size: 30px;
-    top: 0;
-    right: 10px;
-    transform: rotate(45deg);
-    cursor: pointer;
 }

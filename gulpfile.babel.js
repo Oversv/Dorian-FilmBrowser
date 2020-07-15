@@ -90,9 +90,11 @@ gulp.task('sass', () =>{
     return gulp
         .src('./src/scss/styles.scss')
         .pipe(plumber())
-        .pipe(sass({
-            outputStyle: 'compressed'
-        }))   
+        
+       .pipe(sass({
+            outputStyle: 'nested' //compresd
+        }))
+           
         .pipe(gulp.dest('./public/css'))
         .pipe(stream())
 })
