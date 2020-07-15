@@ -32,7 +32,7 @@ form.addEventListener('submit', function (e) {
           added = user.bookmarks.some(function (ele) {
             return ele.imdbID.includes(e.imdbID);
           });
-          div.innerHTML += "                       \n                        <p class=\"film-list__title\" data-modal=\"".concat(e.imdbID, "\">").concat(e.Title, "</p>\n                        <button class=\"film-list__add-bookmark btn--small ").concat(added ? 'added' : "", "\" onclick=\"addBookmark('").concat(e.imdbID, "')\">").concat(added ? 'ADDED' : 'ADD', "</button>\n                    ");
+          div.innerHTML += "                       \n                        <p class=\"film-list__title\" data-modal=\"".concat(e.imdbID, "\">").concat(e.Title, "</p>\n                        <button class=\"film-list__add-bookmark btn--small ").concat(added ? 'added' : "", "\" data-add=\"on\" data-id=\"").concat(e.imdbID, "\" onclick=\"addBookmark('").concat(e.imdbID, "')\">").concat(added ? 'ADDED' : 'ADD', "</button>\n                    ");
           fragment.appendChild(div);
         });
       } else {
@@ -49,6 +49,11 @@ form.addEventListener('submit', function (e) {
   }
 });
 filmList.addEventListener('click', function (e) {
+  if (e.target.getAttribute("data-add") === 'on') {
+    e.target.classList.add('added');
+    e.target.textContent = 'ADDED';
+  }
+
   if (e.target.getAttribute("data-modal")) {
     createModal(e);
   }
@@ -81,16 +86,17 @@ var addBookmark = function addBookmark(id) {
 var createModal = function createModal(e) {
   var modal = document.getElementById('modal');
   var id = e.target.getAttribute('data-modal');
+  var user = JSON.parse(sessionStorage.getItem('user'));
   var film = arrFilmList.filter(function (e) {
     return e.imdbID === id;
   });
-  var added = user.bookmarks.some(function (ele) {
-    return ele.imdbID.includes(id);
+  var added = user.bookmarks.some(function (e) {
+    return e.imdbID.includes(id);
   });
   modal.innerHTML = '';
   var div = document.createElement('div');
   div.classList.add('modal__item');
-  div.innerHTML = "\n        <div class=\"modal__close\" id=\"modal-close\">+</div>\n        <div class=\"modal__img-container\">\n            <img class=\"modal__img\" src=\"".concat(film[0].Poster, "\" alt=\"").concat(film[0].Title, "\" onerror=\"this.src='./images/not-found.png';\"/>\n        </div>\n        <div class=\"modal__info\">\n            <p class=\"modal__paragraph\">").concat(film[0].Title, "</p>\n            <p class=\"modal__paragraph\">Type: ").concat(film[0].Type, "</p>\n            <p class=\"modal__paragraph\">Year: ").concat(film[0].Year, "</p>\n            <button id=\"add\" class=\"film-list__add-bookmark btn--small ").concat(added ? 'added' : '', "\" onclick=\"addBookmark('").concat(film[0].imdbID, "')\">").concat(added ? 'ADDED' : 'ADD', "</button>\n        </div>\n    </div>");
+  div.innerHTML = "\n        <div class=\"modal__close\" id=\"modal-close\">+</div>\n        <div class=\"modal__img-container\">\n            <img class=\"modal__img\" src=\"".concat(film[0].Poster, "\" alt=\"").concat(film[0].Title, "\" onerror=\"this.src='./images/not-found.png';\"/>\n        </div>\n        <div class=\"modal__info\">\n            <p class=\"modal__paragraph\">").concat(film[0].Title, "</p>\n            <p class=\"modal__paragraph\">Type: ").concat(film[0].Type, "</p>\n            <p class=\"modal__paragraph\">Year: ").concat(film[0].Year, "</p>\n            <button id=\"add\" class=\"btn--small ").concat(added ? 'added' : '', "\" data-add=\"on\" data-id=\"").concat(film[0].imdbID, "\" onclick=\"addBookmark('").concat(film[0].imdbID, "')\">").concat(added ? 'ADDED' : 'ADD', "</button>\n        </div>\n    </div>");
   modal.appendChild(div);
   modal.classList.add('modal--show');
 };
@@ -103,9 +109,15 @@ modal.addEventListener('click', function (e) {
     modal.classList.remove('modal--show');
   }
 
-  if (e.target.getAttribute('id') === 'add') {
+  if (e.target.getAttribute('data-add') === 'on') {
     btnAdd.classList.add('added');
-    console.log(btnAdd);
     btnAdd.textContent = 'ADDED';
+    var id = e.target.getAttribute('data-id');
+    var btnBrowserList = Array.from(document.querySelectorAll("[data-id]"));
+    btnBrowserList = btnBrowserList.filter(function (e) {
+      return e.getAttribute('data-id') === id;
+    });
+    btnBrowserList[0].textContent = 'ADDED';
+    btnBrowserList[0].classList.add('added');
   }
 });
