@@ -1,17 +1,18 @@
 *,
 *::before, 
 *::after {
-    font-family: Helvetica, sans-serif;
+    font-family: Helvetica, sans-serif;  
     box-sizing: border-box;   
 }
 body{
     margin:0
 }
 a{  
-    color: red;
+    color: $base;
     text-decoration: none;
+
     &:visited{
-        color: inherit;
+        color: $base;
     }
 }
 main{  
@@ -32,8 +33,7 @@ main{
 }
 .nav-bar{    
     background-color: $contrast-one;
-    color: $base;
-
+    
     &__ul{   
         display: flex;
         flex-wrap: wrap;
