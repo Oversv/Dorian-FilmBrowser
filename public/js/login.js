@@ -37,7 +37,7 @@ login.addEventListener('submit', function (e) {
 
 var id = function id() {
   return Date.now() + Math.floor(Math.random() * 1000);
-}; //Add an user to localstorage
+}; //Add an user to localStorage
 
 
 var addUserLocalStorage = function addUserLocalStorage(user) {
@@ -62,7 +62,7 @@ var addUserSessionStorage = function addUserSessionStorage(username, password) {
     return e.username === username && e.password === password;
   });
   sessionStorage.setItem('user', JSON.stringify(userLocalStorage));
-}; //Return true if the user and password are equal to other user in the localstorage
+}; //Return true if the user and password are equal to another user in the localstorage
 
 
 var checkUser = function checkUser(storage, user) {

@@ -1,0 +1,23 @@
+.btn{
+    margin-top: 15px;
+    width: 160px;
+    height: 30px;
+    background-color: $contrast-one;
+    color: $base;
+    font-weight: bold;
+    border-radius: 2px; 
+}
+.btn--small{
+    width: 80px;
+    height: 30px;
+    background-color: $contrast-one;
+    color: $base;
+    font-weight: bold;
+    border-radius: 2px; 
+}
+.error{
+    background-color: red;
+    color: $base-two;
+    text-align: center;    
+    font-weight: bold;    
+}

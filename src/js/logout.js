@@ -10,7 +10,6 @@ else{
     welcome.textContent = `Welcome ${user.username}`
 }
 
-
 /** Logout **/
 const logoutBtn = document.getElementById('btn-logout')
 

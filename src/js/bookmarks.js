@@ -26,7 +26,10 @@ const showFilms = () =>{
         
         div.innerHTML+=`
             <div class="bookmarks__img-container">
-                <img class="bookmarks__img" src="${e.Poster}" alt="${e.Title}" onerror="this.src='./images/not-found.png';">
+                <img class="bookmarks__img" 
+                    src="${e.Poster}" 
+                    alt="${e.Title}" 
+                    onerror="this.src='./images/not-found.png';">
             </div>
             <div class="bookmarks__info">
                 <p>${e.Title}<p/>
@@ -49,7 +52,7 @@ const deleteBookmark = id =>{
     user.bookmarks = user.bookmarks.filter(e => e.imdbID !== id) 
     sessionStorage.setItem('user', JSON.stringify(user))
 
-    //Update socalStorage
+    //Update localStorage
     const allLocalStorage = JSON.parse(localStorage.users).filter(e => e.id !== user.id);
     allLocalStorage.push(user)
     localStorage.setItem('users', JSON.stringify(allLocalStorage))

@@ -1,0 +1,49 @@
+*,
+*::before, 
+*::after {
+    font-family: Helvetica, sans-serif;
+    box-sizing: border-box;   
+}
+body{
+    margin:0
+}
+a{
+    text-decoration: none;
+    &:visited{
+        color: inherit;
+    }
+}
+main{  
+    min-height: 100vh;
+}
+
+//Header and Nav of all pages except index
+.header--noIndex{
+    display: flex;   
+    justify-content: space-around;
+    align-items: center;
+    background-color: $base; 
+    height: 50px;      
+}
+.welcome{
+    color: $base-two;
+    font-weight: bold;
+}
+.nav-bar{    
+    background-color: $contrast-one;
+    color: $base;
+
+    &__ul{   
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        font-weight: bold;    
+        list-style: none;
+        margin: 0;
+        padding: 0;    
+    }
+    &__item{
+        padding: 5px 10px;
+        cursor: pointer;
+    }    
+}

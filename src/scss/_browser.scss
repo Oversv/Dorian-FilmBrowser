@@ -1,0 +1,112 @@
+.form-browser{
+    padding: 10px 0;
+    text-align: center;
+
+    &__input{
+        width: 160px;
+        height: 30px;    
+        padding-left: 5px;
+        margin: 5px;   
+        background-color: $contrast-one;
+        color: $base;
+        outline: none;
+        border-radius: 2px;  
+        &::placeholder{
+            color: $base;
+        }  
+    }
+}
+
+.film-list{
+    margin-left: auto;
+    margin-right: auto;  
+    max-width: 750px;
+    
+    &__item{
+        display: grid;
+        grid-template-columns: auto 100px;    
+        margin-bottom: 10px;
+        padding: 5px;  
+        background-color: $base-two;
+        border-radius: 4px;
+    }
+    &__item--not-found{
+        text-align: center;
+        background-color: $base-two;
+        padding: 5px;  
+    }
+    &__title{
+        padding-left: 15px;
+        margin: 0;
+        cursor: pointer;
+    }
+    &__add-bookmark{
+        align-self: center;
+        justify-self: center;    
+    }
+}
+
+//Modal
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0,0,0,0.7);
+    transform: scale(0);
+    transition: transform .3s;
+    z-index: 100;
+
+    &__item{
+        width: 350px;
+        height: 450px;
+        background-color: $base;
+        opacity: 1;    
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+        position: relative;
+        border: 3px solid $contrast-one;
+        border-radius: 8px; 
+    }
+
+    &__img-container,
+    &__info{
+        width: 250px;
+        height: 250px;
+        text-align: center;
+    }
+    &__img{
+        max-width: 100%;
+        max-height: 100%;        
+    }
+    &__info{
+        margin-top: 20px;
+        text-align: center;
+        color: $base-two;  
+    }
+    &__paragraph{        
+        margin: 5px;
+    }
+    &__close{
+        position: absolute;
+        font-size: 30px;
+        top: 0;
+        right: 10px;
+        transform: rotate(45deg);
+        color: $contrast-one;
+        cursor: pointer;        
+    }
+    &--show{
+        transform: scale(1);
+    }
+}
+
+.added{
+    background-color: green;
+}

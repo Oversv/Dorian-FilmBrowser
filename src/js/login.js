@@ -42,7 +42,7 @@ const id = () =>{
     return Date.now()+(Math.floor(Math.random()*1000))
 }
 
-//Add an user to localstorage
+//Add an user to localStorage
 const addUserLocalStorage = user =>{
     
     let data = JSON.parse(localStorage.getItem("users"))   
@@ -71,7 +71,7 @@ const addUserSessionStorage = (username, password)=>{
     sessionStorage.setItem('user', JSON.stringify(userLocalStorage) )
 }
 
-//Return true if the user and password are equal to other user in the localstorage
+//Return true if the user and password are equal to another user in the localstorage
 const checkUser = (storage, user) => {   
     let result = false
 
