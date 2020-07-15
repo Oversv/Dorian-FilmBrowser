@@ -7,11 +7,23 @@ const showFilms = () =>{
     const bookmarksContainer = document.getElementById('bookmarks')
     const fragment = document.createDocumentFragment()
     
+    //Info bookmarks
+    const totalBookmarks = document.getElementById('total-bookmarks')
+    const totalMovies = document.getElementById('total-movies')
+    const totalSeries = document.getElementById('total-series')
+    const totalEpisodes = document.getElementById('total-episodes')
+
+    totalBookmarks.textContent = ` Bookmarks ${user.bookmarks.length}:`
+    totalMovies.textContent = ` Movies ${user.bookmarks.filter(e => e.Type === 'movie').length}`
+    totalSeries.textContent = ` Series ${user.bookmarks.filter(e => e.Type === 'series').length}`
+    totalEpisodes.textContent = ` Episodes ${user.bookmarks.filter(e => e.Type === 'episode').length}`
+
     bookmarksContainer.innerHTML = ''
 
     user.bookmarks.sort((a, b) => (a.Title > b.Title) ? 1 : -1).forEach(e => {
         const div = document.createElement('div')
         div.classList.add('bookmarks__item')
+        
         div.innerHTML+=`
             <div class="bookmarks__img-container">
                 <img class="bookmarks__img" src="${e.Poster}" alt="${e.Title}" onerror="this.src='./images/not-found.png';">

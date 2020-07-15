@@ -7,7 +7,6 @@ if(user === undefined || user === null){
     window.location.href = "./index.html"
 }
 else{
-
     welcome.textContent = `Welcome ${user.username}`
 }
 

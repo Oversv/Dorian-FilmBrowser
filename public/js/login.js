@@ -10,16 +10,21 @@ var user = {
 login.addEventListener('submit', function (e) {
   var username = document.getElementById('username').value.trim();
   var password = document.getElementById('password').value.trim();
+  var error = document.getElementById('error-login');
 
   if (username.length < 4 || password.length < 4) {
-    e.preventDefault(); //-----Cambiar idioma y estos mensajes se tienen que mostrar por pantalla
+    e.preventDefault();
 
     if (username.length < 4) {
-      console.log("El usuario tiene que tener 4 caracteres o más");
+      error.textContent = "Username is too short";
     }
 
     if (password.length < 4) {
-      console.log("La contraseña tiene que tener 4 caracteres o más");
+      error.textContent = " Password is too short";
+    }
+
+    if (username.length < 4 && password.length < 4) {
+      error.textContent = "Username and password are too short";
     }
   } else {
     user.username = username;

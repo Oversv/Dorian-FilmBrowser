@@ -10,20 +10,23 @@ const user = {
 login.addEventListener('submit', e =>{
 
     const username = document.getElementById('username').value.trim()
-    const password = document.getElementById('password').value.trim()  
+    const password = document.getElementById('password').value.trim()
+    const error = document.getElementById('error-login')  
 
     if(username.length < 4 || password.length < 4){
         e.preventDefault()
-        //-----Cambiar idioma y estos mensajes se tienen que mostrar por pantalla
+       
         if(username.length < 4){
-            console.log("El usuario tiene que tener 4 caracteres o más")
+            error.textContent = "Username is too short"
         }
         if(password.length < 4){
-            console.log("La contraseña tiene que tener 4 caracteres o más")
+            error.textContent = " Password is too short"
+        }
+        if(username.length < 4 && password.length < 4){
+            error.textContent = "Username and password are too short"
         }         
         
-    }else{        
-       
+    }else{               
         user.username = username
         user.password = password  
        

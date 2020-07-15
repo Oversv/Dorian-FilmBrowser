@@ -1,18 +1,20 @@
 const form = document.getElementById('browser')
 const filmList = document.getElementById('filmList')
-let arrFilmList = [] //This array keeps the search data
+let arrFilmList = [] //This array keeps the result of the browser
 
 form.addEventListener('submit', (e)=>{
     e.preventDefault()
     
     const film = document.getElementById('film').value.trim()
     const user = JSON.parse(sessionStorage.getItem('user'))
+    const error = document.getElementById('error-browser')
     let added = false
     
     if(film.length === 0){
-        //------Mensaje de error
-        console.log("Rellena el campo")
+        error.textContent = "Write something :-)"
     }else{
+        error.textContent = ""
+        
         fetch(`http://www.omdbapi.com/?apikey=72cf791f&s=${film}`)
         .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))//Sin esta línea, se entraría siempre en el data, auque le peteción sea incorrecta
         .then(res => res.json())
@@ -41,17 +43,14 @@ form.addEventListener('submit', (e)=>{
                
                 const div = document.createElement('div')
                 div.innerHTML+=`
-                    <p class="film-list__item--not-found">${data.Error}</p>                     
-                `
-                //--------------Falta crear la clase para el div Error
+                    <p class="film-list__item--not-found">${data.Error}</p>                  
+                `                
                 fragment.appendChild(div)
             }
             filmList.appendChild(fragment)
-
         })
         .catch(err => console.log(`Error en la petición ${err}`)) 
-        form.reset()
-        //------Revisar el tema del placeholder, no me convence mucho
+        form.reset()       
     }
 })
 
@@ -91,6 +90,7 @@ const createModal = (e) =>{
 
     const div = document.createElement('div')
     div.classList.add('modal__item')
+    
     div.innerHTML = `
         <div class="modal__close" id="modal-close">+</div>
         <div class="modal__img-container">
@@ -108,7 +108,6 @@ const createModal = (e) =>{
     modal.classList.add('modal--show')
 }
 
-//Close Modal
 const modal = document.getElementById('modal')
 
 modal.addEventListener('click', e =>{

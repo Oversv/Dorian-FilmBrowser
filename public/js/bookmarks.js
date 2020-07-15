@@ -7,7 +7,22 @@ window.addEventListener('load', function () {
 var showFilms = function showFilms() {
   var user = JSON.parse(sessionStorage.getItem('user'));
   var bookmarksContainer = document.getElementById('bookmarks');
-  var fragment = document.createDocumentFragment();
+  var fragment = document.createDocumentFragment(); //Info bookmarks
+
+  var totalBookmarks = document.getElementById('total-bookmarks');
+  var totalMovies = document.getElementById('total-movies');
+  var totalSeries = document.getElementById('total-series');
+  var totalEpisodes = document.getElementById('total-episodes');
+  totalBookmarks.textContent = " Bookmarks ".concat(user.bookmarks.length, ":");
+  totalMovies.textContent = " Movies ".concat(user.bookmarks.filter(function (e) {
+    return e.Type === 'movie';
+  }).length);
+  totalSeries.textContent = " Series ".concat(user.bookmarks.filter(function (e) {
+    return e.Type === 'series';
+  }).length);
+  totalEpisodes.textContent = " Episodes ".concat(user.bookmarks.filter(function (e) {
+    return e.Type === 'episode';
+  }).length);
   bookmarksContainer.innerHTML = '';
   user.bookmarks.sort(function (a, b) {
     return a.Title > b.Title ? 1 : -1;
