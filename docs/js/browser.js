@@ -14,7 +14,7 @@ form.addEventListener('submit', function (e) {
     error.textContent = "Write something :-)";
   } else {
     error.textContent = "";
-    fetch("http://www.omdbapi.com/?apikey=72cf791f&s=".concat(film)).then(function (res) {
+    fetch("https://www.omdbapi.com/?apikey=72cf791f&s=".concat(film)).then(function (res) {
       return res.ok ? Promise.resolve(res) : Promise.reject(res);
     }).then(function (res) {
       return res.json();

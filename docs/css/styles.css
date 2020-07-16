@@ -99,8 +99,10 @@ main {
   font-weight: bold; }
 
 .form-browser {
-  padding: 10px 0;
-  text-align: center; }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0; }
   .form-browser__input {
     width: 160px;
     height: 30px;

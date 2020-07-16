@@ -14,7 +14,7 @@ form.addEventListener('submit', (e)=>{
     }else{
         error.textContent = ""
         
-        fetch(`http://www.omdbapi.com/?apikey=72cf791f&s=${film}`)
+        fetch(`https://www.omdbapi.com/?apikey=72cf791f&s=${film}`)
         .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))
         .then(res => res.json())
         .then(data => {
