@@ -252,6 +252,7 @@ main {
   display: flex;
   font-weight: bold;
   height: 30px;
+  overflow: hidden;
   animation: righToLeft 50s linear infinite; }
   .info-bookmarks__paragraft {
     margin: 5px 0;
@@ -261,7 +262,7 @@ main {
     min-width: 150px; }
   @media (min-width: 768px) {
     .info-bookmarks {
-      animation: righToLeft 100s linear infinite; } }
+      animation: righToLeft 80s linear infinite; } }
 
 @keyframes righToLeft {
   0% {
