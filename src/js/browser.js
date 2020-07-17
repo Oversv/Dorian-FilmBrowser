@@ -124,37 +124,56 @@ const addBookmark = id =>{
 const createModal = e =>{
     const modal = document.getElementById('modal')
     const id = e.target.getAttribute('data-modal')
-    const user = JSON.parse(sessionStorage.getItem('user'))
-    const film = arrFilmList.filter(e => e.imdbID === id)
+    const user = JSON.parse(sessionStorage.getItem('user'))  
     const added = user.bookmarks.some(e =>e.imdbID.includes(id))
 
-    modal.innerHTML = ''
+    fetch(`https://www.omdbapi.com/?apikey=72cf791f&i=${id}`)
+    .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))
+    .then(res => res.json())
+    .then(data => {
+        
+        modal.innerHTML = ''
 
-    const div = document.createElement('div')
-    div.classList.add('modal__item')
+        const div = document.createElement('div')
+        div.classList.add('modal__item')
+        
+        div.innerHTML = `
+            <div class="modal__close" id="modal-close">+</div>
+            <div class="modal__container-top">
+                <div class="modal__img-container">
+                    <img 
+                    class="modal__img" 
+                    src="${data.Poster}" 
+                    alt="${data.Title}" 
+                    onerror="this.src='./images/not-found.png';"/>
+                </div>
+                <div class="modal__info">
+                    <p class="modal__title">${data.Title}</p>
+                    <p>Type: ${data.Type}</p>
+                    <p>Genre: ${data.Genre}</p>
+                    <p>Year: ${data.Year}</p>
+                    <p>Duration: ${data.Runtime}</p>
+                    <p class="modal__rating">Rating: ${data.imdbRating}</p>                   
+                </div>
+            </div>
+            <div class="modal__details">
+                <p>Director: ${data.Director}</p>
+                <p>Actors: ${data.Actors}</p>
+                <p>Synopsis: ${data.Plot}</p>                
+            </div>
+            <div class="modal__btn">
+                <button id="add" 
+                    class="btn--small ${(added) ? 'added': ''}" 
+                    data-add="on" 
+                    data-id="${data.imdbID}" 
+                    onclick="addBookmark('${data.imdbID}')"
+                    >${(added) ? 'ADDED': 'ADD'}
+                </button>
+            </div>
+        </div>`
     
-    div.innerHTML = `
-        <div class="modal__close" id="modal-close">+</div>
-        <div class="modal__img-container">
-            <img 
-                class="modal__img" 
-                src="${film[0].Poster}" 
-                alt="${film[0].Title}" 
-                onerror="this.src='./images/not-found.png';"/>
-        </div>
-        <div class="modal__info">
-            <p class="modal__paragraph">${film[0].Title}</p>
-            <p class="modal__paragraph">Type: ${film[0].Type}</p>
-            <p class="modal__paragraph">Year: ${film[0].Year}</p>
-            <button id="add" 
-                class="btn--small ${(added) ? 'added': ''}" 
-                data-add="on" 
-                data-id="${film[0].imdbID}" 
-                onclick="addBookmark('${film[0].imdbID}')"
-                >${(added) ? 'ADDED': 'ADD'}</button>
-        </div>
-    </div>`
-
-    modal.appendChild(div)
-    modal.classList.add('modal--show')
+        modal.appendChild(div)
+        modal.classList.add('modal--show')
+    })
+    .catch(err => console.log(`Error in the request ${err}`)) 
 }

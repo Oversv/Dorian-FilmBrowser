@@ -27,5 +27,6 @@
     "gulp-purgecss": "^2.3.0",
     "gulp-sass": "^4.1.0",
     "gulp-terser": "^1.2.0"
-  }
+  },
+  "dependencies": {}
 }

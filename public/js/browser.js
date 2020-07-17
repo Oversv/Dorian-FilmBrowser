@@ -116,16 +116,21 @@ var createModal = function createModal(e) {
   var modal = document.getElementById('modal');
   var id = e.target.getAttribute('data-modal');
   var user = JSON.parse(sessionStorage.getItem('user'));
-  var film = arrFilmList.filter(function (e) {
-    return e.imdbID === id;
-  });
   var added = user.bookmarks.some(function (e) {
     return e.imdbID.includes(id);
   });
-  modal.innerHTML = '';
-  var div = document.createElement('div');
-  div.classList.add('modal__item');
-  div.innerHTML = "\n        <div class=\"modal__close\" id=\"modal-close\">+</div>\n        <div class=\"modal__img-container\">\n            <img \n                class=\"modal__img\" \n                src=\"".concat(film[0].Poster, "\" \n                alt=\"").concat(film[0].Title, "\" \n                onerror=\"this.src='./images/not-found.png';\"/>\n        </div>\n        <div class=\"modal__info\">\n            <p class=\"modal__paragraph\">").concat(film[0].Title, "</p>\n            <p class=\"modal__paragraph\">Type: ").concat(film[0].Type, "</p>\n            <p class=\"modal__paragraph\">Year: ").concat(film[0].Year, "</p>\n            <button id=\"add\" \n                class=\"btn--small ").concat(added ? 'added' : '', "\" \n                data-add=\"on\" \n                data-id=\"").concat(film[0].imdbID, "\" \n                onclick=\"addBookmark('").concat(film[0].imdbID, "')\"\n                >").concat(added ? 'ADDED' : 'ADD', "</button>\n        </div>\n    </div>");
-  modal.appendChild(div);
-  modal.classList.add('modal--show');
+  fetch("https://www.omdbapi.com/?apikey=72cf791f&i=".concat(id)).then(function (res) {
+    return res.ok ? Promise.resolve(res) : Promise.reject(res);
+  }).then(function (res) {
+    return res.json();
+  }).then(function (data) {
+    modal.innerHTML = '';
+    var div = document.createElement('div');
+    div.classList.add('modal__item');
+    div.innerHTML = "\n            <div class=\"modal__close\" id=\"modal-close\">+</div>\n            <div class=\"modal__container-top\">\n                <div class=\"modal__img-container\">\n                    <img \n                    class=\"modal__img\" \n                    src=\"".concat(data.Poster, "\" \n                    alt=\"").concat(data.Title, "\" \n                    onerror=\"this.src='./images/not-found.png';\"/>\n                </div>\n                <div class=\"modal__info\">\n                    <p class=\"modal__title\">").concat(data.Title, "</p>\n                    <p>Type: ").concat(data.Type, "</p>\n                    <p>Genre: ").concat(data.Genre, "</p>\n                    <p>Year: ").concat(data.Year, "</p>\n                    <p>Duration: ").concat(data.Runtime, "</p>\n                    <p class=\"modal__rating\">Rating: ").concat(data.imdbRating, "</p>                   \n                </div>\n            </div>\n            <div class=\"modal__details\">\n                <p>Director: ").concat(data.Director, "</p>\n                <p>Actors: ").concat(data.Actors, "</p>\n                <p>Synopsis: ").concat(data.Plot, "</p>                \n            </div>\n            <div class=\"modal__btn\">\n                <button id=\"add\" \n                    class=\"btn--small ").concat(added ? 'added' : '', "\" \n                    data-add=\"on\" \n                    data-id=\"").concat(data.imdbID, "\" \n                    onclick=\"addBookmark('").concat(data.imdbID, "')\"\n                    >").concat(added ? 'ADDED' : 'ADD', "\n                </button>\n            </div>\n        </div>");
+    modal.appendChild(div);
+    modal.classList.add('modal--show');
+  })["catch"](function (err) {
+    return console.log("Error in the request ".concat(err));
+  });
 };
