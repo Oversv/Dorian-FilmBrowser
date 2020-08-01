@@ -93,6 +93,8 @@ main {
   border-radius: 2px; }
 
 .error {
+  position: fixed;
+  width: 100%;
   background-color: red;
   color: #f4f4f4;
   text-align: center;

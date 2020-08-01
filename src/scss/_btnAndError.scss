@@ -17,6 +17,8 @@
     border-radius: 2px; 
 }
 .error{
+    position: fixed;
+    width: 100%;
     background-color: red;
     color: $base-two;
     text-align: center;    
