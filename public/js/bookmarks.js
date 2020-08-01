@@ -1,9 +1,6 @@
 "use strict";
 
-window.addEventListener('load', function () {
-  showFilms();
-});
-
+/*** FUNCTIONS ***/
 var showFilms = function showFilms() {
   var user = JSON.parse(sessionStorage.getItem('user'));
   var bookmarksContainer = document.getElementById('bookmarks');
@@ -50,3 +47,9 @@ var deleteBookmark = function deleteBookmark(id) {
   localStorage.setItem('users', JSON.stringify(allLocalStorage));
   showFilms();
 };
+/*** LISTENERS ***/
+
+
+window.addEventListener('load', function () {
+  showFilms();
+});

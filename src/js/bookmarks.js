@@ -1,7 +1,4 @@
-window.addEventListener('load', () =>{
-    showFilms()    
-})
-
+/*** FUNCTIONS ***/
 const showFilms = () =>{
     const user = JSON.parse(sessionStorage.getItem('user'))
     const bookmarksContainer = document.getElementById('bookmarks')
@@ -59,3 +56,8 @@ const deleteBookmark = id =>{
    
     showFilms()      
 }
+
+/*** LISTENERS ***/
+window.addEventListener('load', () =>{
+    showFilms()    
+})

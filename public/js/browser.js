@@ -5,61 +5,8 @@ var filmList = document.getElementById('filmList');
 var modal = document.getElementById('modal');
 var arrFilmList = []; //This array saves the result of the browser
 
-form.addEventListener('submit', function (e) {
-  e.preventDefault();
-  var film = document.getElementById('film').value.trim();
-  var error = document.getElementById('error-browser');
-
-  if (film.length === 0) {
-    error.textContent = "Write something :-)";
-  } else {
-    error.textContent = "";
-    fetch("https://www.omdbapi.com/?apikey=72cf791f&s=".concat(film)).then(function (res) {
-      return res.ok ? Promise.resolve(res) : Promise.reject(res);
-    }).then(function (res) {
-      return res.json();
-    }).then(function (data) {
-      createBrowserList(data);
-    })["catch"](function (err) {
-      return console.log("Error in the request ".concat(err));
-    });
-    form.reset();
-  }
-});
-filmList.addEventListener('click', function (e) {
-  //Update the btns [It is probably better in the addBookmark function]
-  if (e.target.getAttribute("data-add") === 'on') {
-    e.target.classList.add('added');
-    e.target.textContent = 'ADDED';
-  } //Create the modal
-
-
-  if (e.target.getAttribute("data-modal")) {
-    createModal(e);
-  }
-});
-modal.addEventListener('click', function (e) {
-  var btnAdd = document.getElementById('add'); //close modal 
-
-  if (e.target.getAttribute('id') === 'modal-close') {
-    modal.classList.remove('modal--show');
-  } //Update btns 
-
-
-  if (e.target.getAttribute('data-add') === 'on') {
-    //Update btn of modal
-    btnAdd.classList.add('added');
-    btnAdd.textContent = 'ADDED'; //Update btn of browser list
-
-    var id = e.target.getAttribute('data-id');
-    var btnBrowserList = Array.from(document.querySelectorAll("[data-id]"));
-    btnBrowserList = btnBrowserList.filter(function (e) {
-      return e.getAttribute('data-id') === id;
-    });
-    btnBrowserList[0].textContent = 'ADDED';
-    btnBrowserList[0].classList.add('added');
-  }
-}); //Create the browser list, it receives a parameter with the fetch data
+/*** FUNCTIONS ***/
+//Create the browser list, it receives a parameter with the fetch data
 
 var createBrowserList = function createBrowserList(data) {
   var user = JSON.parse(sessionStorage.getItem('user'));
@@ -134,3 +81,61 @@ var createModal = function createModal(e) {
     return console.log("Error in the request ".concat(err));
   });
 };
+/*** LISTENERS ***/
+
+
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  var film = document.getElementById('film').value.trim();
+  var error = document.getElementById('error-browser');
+
+  if (film.length === 0) {
+    error.textContent = "Write something :-)";
+  } else {
+    error.textContent = "";
+    fetch("https://www.omdbapi.com/?apikey=72cf791f&s=".concat(film)).then(function (res) {
+      return res.ok ? Promise.resolve(res) : Promise.reject(res);
+    }).then(function (res) {
+      return res.json();
+    }).then(function (data) {
+      createBrowserList(data);
+    })["catch"](function (err) {
+      return console.log("Error in the request ".concat(err));
+    });
+    form.reset();
+  }
+});
+filmList.addEventListener('click', function (e) {
+  //Update the btns [It is probably better in the addBookmark function]
+  if (e.target.getAttribute("data-add") === 'on') {
+    e.target.classList.add('added');
+    e.target.textContent = 'ADDED';
+  } //Create the modal
+
+
+  if (e.target.getAttribute("data-modal")) {
+    createModal(e);
+  }
+});
+modal.addEventListener('click', function (e) {
+  var btnAdd = document.getElementById('add'); //close modal 
+
+  if (e.target.getAttribute('id') === 'modal-close') {
+    modal.classList.remove('modal--show');
+  } //Update btns 
+
+
+  if (e.target.getAttribute('data-add') === 'on') {
+    //Update btn of modal
+    btnAdd.classList.add('added');
+    btnAdd.textContent = 'ADDED'; //Update btn of browser list
+
+    var id = e.target.getAttribute('data-id');
+    var btnBrowserList = Array.from(document.querySelectorAll("[data-id]"));
+    btnBrowserList = btnBrowserList.filter(function (e) {
+      return e.getAttribute('data-id') === id;
+    });
+    btnBrowserList[0].textContent = 'ADDED';
+    btnBrowserList[0].classList.add('added');
+  }
+});

@@ -3,65 +3,7 @@ const filmList = document.getElementById('filmList')
 const modal = document.getElementById('modal')
 let arrFilmList = [] //This array saves the result of the browser
 
-form.addEventListener('submit', (e)=>{
-    e.preventDefault()
-    
-    const film = document.getElementById('film').value.trim()    
-    const error = document.getElementById('error-browser')  
-    
-    if(film.length === 0){
-        error.textContent = "Write something :-)"
-    }else{
-        error.textContent = ""
-        
-        fetch(`https://www.omdbapi.com/?apikey=72cf791f&s=${film}`)
-        .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))
-        .then(res => res.json())
-        .then(data => {
-            createBrowserList(data)
-        })
-        .catch(err => console.log(`Error in the request ${err}`)) 
-        form.reset()       
-    }
-})
-
-filmList.addEventListener('click', e =>{
-
-    //Update the btns [It is probably better in the addBookmark function]
-    if(e.target.getAttribute("data-add") === 'on'){      
-        e.target.classList.add('added')        
-        e.target.textContent = 'ADDED'
-    }
-
-    //Create the modal
-   if(e.target.getAttribute("data-modal")){      
-       createModal(e)
-   }
-})
-
-modal.addEventListener('click', e =>{
-    const btnAdd = document.getElementById('add')
-
-    //close modal 
-    if(e.target.getAttribute('id') === 'modal-close'){
-        modal.classList.remove('modal--show')
-    }
-    //Update btns 
-    if(e.target.getAttribute('data-add') === 'on'){
-        //Update btn of modal
-        btnAdd.classList.add('added')        
-        btnAdd.textContent = 'ADDED'     
-
-        //Update btn of browser list
-        const id = e.target.getAttribute('data-id')        
-        let btnBrowserList = Array.from(document.querySelectorAll(`[data-id]`))
-
-        btnBrowserList=btnBrowserList.filter(e => e.getAttribute('data-id') === id)
-        btnBrowserList[0].textContent = 'ADDED'
-        btnBrowserList[0].classList.add('added')
-    }
-})
-
+/*** FUNCTIONS ***/
 //Create the browser list, it receives a parameter with the fetch data
 const createBrowserList = data =>{
     const user = JSON.parse(sessionStorage.getItem('user'))
@@ -177,3 +119,63 @@ const createModal = e =>{
     })
     .catch(err => console.log(`Error in the request ${err}`)) 
 }
+
+/*** LISTENERS ***/
+form.addEventListener('submit', (e)=>{
+    e.preventDefault()
+    
+    const film = document.getElementById('film').value.trim()    
+    const error = document.getElementById('error-browser')  
+    
+    if(film.length === 0){
+        error.textContent = "Write something :-)"
+    }else{
+        error.textContent = ""
+        
+        fetch(`https://www.omdbapi.com/?apikey=72cf791f&s=${film}`)
+        .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))
+        .then(res => res.json())
+        .then(data => {
+            createBrowserList(data)
+        })
+        .catch(err => console.log(`Error in the request ${err}`)) 
+        form.reset()       
+    }
+})
+
+filmList.addEventListener('click', e =>{
+
+    //Update the btns [It is probably better in the addBookmark function]
+    if(e.target.getAttribute("data-add") === 'on'){      
+        e.target.classList.add('added')        
+        e.target.textContent = 'ADDED'
+    }
+
+    //Create the modal
+   if(e.target.getAttribute("data-modal")){      
+       createModal(e)
+   }
+})
+
+modal.addEventListener('click', e =>{
+    const btnAdd = document.getElementById('add')
+
+    //close modal 
+    if(e.target.getAttribute('id') === 'modal-close'){
+        modal.classList.remove('modal--show')
+    }
+    //Update btns 
+    if(e.target.getAttribute('data-add') === 'on'){
+        //Update btn of modal
+        btnAdd.classList.add('added')        
+        btnAdd.textContent = 'ADDED'     
+
+        //Update btn of browser list
+        const id = e.target.getAttribute('data-id')        
+        let btnBrowserList = Array.from(document.querySelectorAll(`[data-id]`))
+
+        btnBrowserList=btnBrowserList.filter(e => e.getAttribute('data-id') === id)
+        btnBrowserList[0].textContent = 'ADDED'
+        btnBrowserList[0].classList.add('added')
+    }
+})
