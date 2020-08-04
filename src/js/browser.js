@@ -2,6 +2,7 @@ const form = document.getElementById('browser')
 const filmList = document.getElementById('filmList')
 const modal = document.getElementById('modal')
 let arrFilmList = [] //This array saves the result of the browser
+const pagination = document.getElementById('pagination')
 
 /*** FUNCTIONS ***/
 //Create the browser list, it receives a parameter with the fetch data
@@ -30,6 +31,12 @@ const createBrowserList = data =>{
             `    
             fragment.appendChild(div)                   
         })
+
+        //Create pagination
+        // TODO
+        createPagination(Math.ceil(Number(data.totalResults)/10))
+    
+
         
     }else{
        
@@ -38,6 +45,7 @@ const createBrowserList = data =>{
             <p class="film-list__item--not-found">${data.Error}</p>                  
         `                
         fragment.appendChild(div)
+        pagination.innerHTML=''
     }
     filmList.appendChild(fragment)
 }
@@ -62,14 +70,89 @@ const addBookmark = id =>{
     }    
 }
 
+//Pagination
+
+const createPagination = (pages, actualPage = 1) =>{
+   
+    const fragment = document.createDocumentFragment()
+    pagination.innerHTML=''
+
+    if(pages !== 1){
+
+        if(pages <= 5){
+         
+            const list = document.createElement('ul')
+
+            for(let i = 1; i <= pages; i ++){
+                 
+                const item = document.createElement('li')
+                item.textContent = i
+                list.appendChild(item)
+            }
+        
+            fragment.appendChild(list)
+            pagination.appendChild(fragment)
+
+        }else{
+            console.log('>5')
+
+            if(actualPage > 2 && actualPage <= pages -2){
+               
+                const list = document.createElement('ul')
+    
+                for(let i = actualPage -2; i <= actualPage + 2; i ++){
+                     
+                    const item = document.createElement('li')
+                    item.textContent = i
+                    list.appendChild(item)
+                }
+            
+                fragment.appendChild(list)
+                pagination.appendChild(fragment)
+
+            }else if(actualPage > pages -2){
+           
+                const list = document.createElement('ul')
+    
+                for(let i = pages -4; i <= pages; i ++){
+                     
+                    const item = document.createElement('li')
+                    item.textContent = i
+                    list.appendChild(item)
+                }
+            
+                fragment.appendChild(list)
+                pagination.appendChild(fragment)
+            
+            }else{
+              
+                const list = document.createElement('ul')
+    
+                for(let i = 1; i <= 5; i ++){
+                     
+                    const item = document.createElement('li')
+                    item.textContent = i
+                    list.appendChild(item)
+                }
+            
+                fragment.appendChild(list)
+                pagination.appendChild(fragment)
+            }
+        }
+    }    
+}
+
+
+
 //Create modal
 const createModal = e =>{
     const modal = document.getElementById('modal')
     const id = e.target.getAttribute('data-modal')
     const user = JSON.parse(sessionStorage.getItem('user'))  
     const added = user.bookmarks.some(e =>e.imdbID.includes(id))
+    const API_KEY = '72cf791f'
 
-    fetch(`https://www.omdbapi.com/?apikey=72cf791f&i=${id}`)
+    fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`)
     .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))
     .then(res => res.json())
     .then(data => {
@@ -125,18 +208,20 @@ form.addEventListener('submit', (e)=>{
     e.preventDefault()
     
     const film = document.getElementById('film').value.trim()    
-    const error = document.getElementById('error-browser')  
+    const error = document.getElementById('error-browser')
+    const API_KEY = '72cf791f'
     
     if(film.length === 0){
         error.textContent = "Write something :-)"
     }else{
         error.textContent = ""
         
-        fetch(`https://www.omdbapi.com/?apikey=72cf791f&s=${film}`)
+        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${film}`)
         .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))
         .then(res => res.json())
         .then(data => {
             createBrowserList(data)
+            // !pagination(Math.floor(Number(data.totalResults)/10))
         })
         .catch(err => console.log(`Error in the request ${err}`)) 
         form.reset()       
@@ -178,4 +263,15 @@ modal.addEventListener('click', e =>{
         btnBrowserList[0].textContent = 'ADDED'
         btnBrowserList[0].classList.add('added')
     }
+})
+
+pagination.addEventListener('click', e =>{
+    
+    
+    if(e.target.nodeName === 'LI'){
+        console.log(e.target.outerText)
+    
+    }
+
+    
 })

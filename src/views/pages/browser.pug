@@ -14,11 +14,12 @@ html(lang="en")
             ul.nav-bar__ul
                 li.nav-bar__item: a(href="./browser.html") Browser
                 li.nav-bar__item: a(href="./bookmarks.html") Bookmarks
-        main            
+        main#main-browser            
             form#browser.form-browser               
                 input#film.form-browser__input(type="text" placeholder="Spiderman")
                 input.btn--small(type="submit" value="Search") 
             #filmList.film-list
+            #pagination              
             #modal.modal
         script(src="js/logout.js")
         script(src="js/welcome.js")

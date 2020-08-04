@@ -5,6 +5,7 @@ var filmList = document.getElementById('filmList');
 var modal = document.getElementById('modal');
 var arrFilmList = []; //This array saves the result of the browser
 
+var pagination = document.getElementById('pagination');
 /*** FUNCTIONS ***/
 //Create the browser list, it receives a parameter with the fetch data
 
@@ -24,11 +25,15 @@ var createBrowserList = function createBrowserList(data) {
       });
       div.innerHTML += "                       \n                <p class=\"film-list__title\" data-modal=\"".concat(e.imdbID, "\">").concat(e.Title, "</p>\n                <button \n                    class=\"film-list__add-bookmark btn--small ").concat(added ? 'added' : "", "\" data-add=\"on\" \n                    data-id=\"").concat(e.imdbID, "\" \n                    onclick=\"addBookmark('").concat(e.imdbID, "')\"\n                    >").concat(added ? 'ADDED' : 'ADD', "</button>           \n            ");
       fragment.appendChild(div);
-    });
+    }); //Create pagination
+    // TODO
+
+    createPagination(Math.ceil(Number(data.totalResults) / 10));
   } else {
     var div = document.createElement('div');
     div.innerHTML += "\n            <p class=\"film-list__item--not-found\">".concat(data.Error, "</p>                  \n        ");
     fragment.appendChild(div);
+    pagination.innerHTML = '';
   }
 
   filmList.appendChild(fragment);
@@ -56,6 +61,71 @@ var addBookmark = function addBookmark(id) {
     allLocalStorage.push(user);
     localStorage.setItem('users', JSON.stringify(allLocalStorage));
   }
+}; //Pagination
+
+
+var createPagination = function createPagination(pages) {
+  var actualPage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var fragment = document.createDocumentFragment();
+  pagination.innerHTML = '';
+
+  if (pages !== 1) {
+    if (pages <= 5) {
+      var list = document.createElement('ul');
+
+      for (var i = 1; i <= pages; i++) {
+        var item = document.createElement('li');
+        item.textContent = i;
+        list.appendChild(item);
+      }
+
+      fragment.appendChild(list);
+      pagination.appendChild(fragment);
+    } else {
+      console.log('>5');
+
+      if (actualPage > 2 && actualPage <= pages - 2) {
+        var _list = document.createElement('ul');
+
+        for (var _i = actualPage - 2; _i <= actualPage + 2; _i++) {
+          var _item = document.createElement('li');
+
+          _item.textContent = _i;
+
+          _list.appendChild(_item);
+        }
+
+        fragment.appendChild(_list);
+        pagination.appendChild(fragment);
+      } else if (actualPage > pages - 2) {
+        var _list2 = document.createElement('ul');
+
+        for (var _i2 = pages - 4; _i2 <= pages; _i2++) {
+          var _item2 = document.createElement('li');
+
+          _item2.textContent = _i2;
+
+          _list2.appendChild(_item2);
+        }
+
+        fragment.appendChild(_list2);
+        pagination.appendChild(fragment);
+      } else {
+        var _list3 = document.createElement('ul');
+
+        for (var _i3 = 1; _i3 <= 5; _i3++) {
+          var _item3 = document.createElement('li');
+
+          _item3.textContent = _i3;
+
+          _list3.appendChild(_item3);
+        }
+
+        fragment.appendChild(_list3);
+        pagination.appendChild(fragment);
+      }
+    }
+  }
 }; //Create modal
 
 
@@ -66,7 +136,8 @@ var createModal = function createModal(e) {
   var added = user.bookmarks.some(function (e) {
     return e.imdbID.includes(id);
   });
-  fetch("https://www.omdbapi.com/?apikey=72cf791f&i=".concat(id)).then(function (res) {
+  var API_KEY = '72cf791f';
+  fetch("https://www.omdbapi.com/?apikey=".concat(API_KEY, "&i=").concat(id)).then(function (res) {
     return res.ok ? Promise.resolve(res) : Promise.reject(res);
   }).then(function (res) {
     return res.json();
@@ -88,17 +159,18 @@ form.addEventListener('submit', function (e) {
   e.preventDefault();
   var film = document.getElementById('film').value.trim();
   var error = document.getElementById('error-browser');
+  var API_KEY = '72cf791f';
 
   if (film.length === 0) {
     error.textContent = "Write something :-)";
   } else {
     error.textContent = "";
-    fetch("https://www.omdbapi.com/?apikey=72cf791f&s=".concat(film)).then(function (res) {
+    fetch("https://www.omdbapi.com/?apikey=".concat(API_KEY, "&s=").concat(film)).then(function (res) {
       return res.ok ? Promise.resolve(res) : Promise.reject(res);
     }).then(function (res) {
       return res.json();
     }).then(function (data) {
-      createBrowserList(data);
+      createBrowserList(data); // !pagination(Math.floor(Number(data.totalResults)/10))
     })["catch"](function (err) {
       return console.log("Error in the request ".concat(err));
     });
@@ -137,5 +209,10 @@ modal.addEventListener('click', function (e) {
     });
     btnBrowserList[0].textContent = 'ADDED';
     btnBrowserList[0].classList.add('added');
+  }
+});
+pagination.addEventListener('click', function (e) {
+  if (e.target.nodeName === 'LI') {
+    console.log(e.target.outerText);
   }
 });
