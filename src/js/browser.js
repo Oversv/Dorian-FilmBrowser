@@ -21,7 +21,8 @@ const createBrowserList = data =>{
             div.setAttribute('class', 'film-list__item')
             added = user.bookmarks.some(ele =>ele.imdbID.includes(e.imdbID))
             
-            div.innerHTML+=`                       
+            div.innerHTML+=`
+                <img src="${e.Poster}" class="film-list__img" onerror="this.src='./images/not-found.png';"/>                       
                 <p class="film-list__title" data-modal="${e.imdbID}">${e.Title}</p>
                 <button 
                     class="film-list__add-bookmark btn--small ${(added) ? 'added': ""}" data-add="on" 
@@ -90,7 +91,7 @@ const createPagination = (results, actualPage = 1) =>{
                 if(i === actualPage){
                     item.setAttribute('class', 'pagination__list-item--active')
                 }
-                
+
                 list.appendChild(item)
             }
         

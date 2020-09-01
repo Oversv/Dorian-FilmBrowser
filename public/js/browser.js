@@ -23,7 +23,7 @@ var createBrowserList = function createBrowserList(data) {
       added = user.bookmarks.some(function (ele) {
         return ele.imdbID.includes(e.imdbID);
       });
-      div.innerHTML += "                       \n                <p class=\"film-list__title\" data-modal=\"".concat(e.imdbID, "\">").concat(e.Title, "</p>\n                <button \n                    class=\"film-list__add-bookmark btn--small ").concat(added ? 'added' : "", "\" data-add=\"on\" \n                    data-id=\"").concat(e.imdbID, "\" \n                    onclick=\"addBookmark('").concat(e.imdbID, "')\"\n                    >").concat(added ? 'ADDED' : 'ADD', "</button>           \n            ");
+      div.innerHTML += "\n                <img src=\"".concat(e.Poster, "\" class=\"film-list__img\" onerror=\"this.src='./images/not-found.png';\"/>                       \n                <p class=\"film-list__title\" data-modal=\"").concat(e.imdbID, "\">").concat(e.Title, "</p>\n                <button \n                    class=\"film-list__add-bookmark btn--small ").concat(added ? 'added' : "", "\" data-add=\"on\" \n                    data-id=\"").concat(e.imdbID, "\" \n                    onclick=\"addBookmark('").concat(e.imdbID, "')\"\n                    >").concat(added ? 'ADDED' : 'ADD', "</button>           \n            ");
       fragment.appendChild(div);
     });
     createPagination(Number(data.totalResults), Number(user.actualPage));

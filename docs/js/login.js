@@ -7,33 +7,8 @@ var user = {
   password: "",
   bookmarks: []
 };
-login.addEventListener('submit', function (e) {
-  var username = document.getElementById('username').value.trim();
-  var password = document.getElementById('password').value.trim();
-  var error = document.getElementById('error-login');
-
-  if (username.length < 4 || password.length < 4) {
-    e.preventDefault();
-
-    if (username.length < 4) {
-      error.textContent = "Username is too short";
-    }
-
-    if (password.length < 4) {
-      error.textContent = " Password is too short";
-    }
-
-    if (username.length < 4 && password.length < 4) {
-      error.textContent = "Username and password are too short";
-    }
-  } else {
-    user.username = username;
-    user.password = password;
-    addUserLocalStorage(user);
-    addUserSessionStorage(username, password);
-    login.reset();
-  }
-}); //Id generator
+/*** FUNCTIONS ***/
+//Id generator
 
 var id = function id() {
   return Date.now() + Math.floor(Math.random() * 1000);
@@ -83,3 +58,33 @@ var checkUser = function checkUser(storage, user) {
 
   return result;
 };
+/*** LISTENERS ***/
+
+
+login.addEventListener('submit', function (e) {
+  var username = document.getElementById('username').value.trim();
+  var password = document.getElementById('password').value.trim();
+  var error = document.getElementById('error-login');
+
+  if (username.length < 4 || password.length < 4) {
+    e.preventDefault();
+
+    if (username.length < 4) {
+      error.textContent = "Username is too short";
+    }
+
+    if (password.length < 4) {
+      error.textContent = " Password is too short";
+    }
+
+    if (username.length < 4 && password.length < 4) {
+      error.textContent = "Username and password are too short";
+    }
+  } else {
+    user.username = username;
+    user.password = password;
+    addUserLocalStorage(user);
+    addUserSessionStorage(username, password);
+    login.reset();
+  }
+});
