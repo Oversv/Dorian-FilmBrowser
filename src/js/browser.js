@@ -258,9 +258,9 @@ filmList.addEventListener('click', e =>{
     }
 
     //Create the modal
-   if(e.target.getAttribute("data-modal")){      
-       createModal(e)
-   }
+    if(e.target.getAttribute("data-modal")){      
+        createModal(e)
+    }
 })
 
 modal.addEventListener('click', e =>{
