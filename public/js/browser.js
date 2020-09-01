@@ -25,10 +25,8 @@ var createBrowserList = function createBrowserList(data) {
       });
       div.innerHTML += "                       \n                <p class=\"film-list__title\" data-modal=\"".concat(e.imdbID, "\">").concat(e.Title, "</p>\n                <button \n                    class=\"film-list__add-bookmark btn--small ").concat(added ? 'added' : "", "\" data-add=\"on\" \n                    data-id=\"").concat(e.imdbID, "\" \n                    onclick=\"addBookmark('").concat(e.imdbID, "')\"\n                    >").concat(added ? 'ADDED' : 'ADD', "</button>           \n            ");
       fragment.appendChild(div);
-    }); //Create pagination
-    // TODO
-
-    createPagination(Math.ceil(Number(data.totalResults) / 10));
+    });
+    createPagination(Number(data.totalResults), Number(user.actualPage));
   } else {
     var div = document.createElement('div');
     div.innerHTML += "\n            <p class=\"film-list__item--not-found\">".concat(data.Error, "</p>                  \n        ");
@@ -62,66 +60,92 @@ var addBookmark = function addBookmark(id) {
     localStorage.setItem('users', JSON.stringify(allLocalStorage));
   }
 }; //Pagination
+//TODO Add first and last page 
 
 
-var createPagination = function createPagination(pages) {
+var createPagination = function createPagination(results) {
   var actualPage = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1;
+  var pages = Math.ceil(results / 10);
   var fragment = document.createDocumentFragment();
   pagination.innerHTML = '';
 
   if (pages !== 1) {
-    if (pages <= 5) {
-      var list = document.createElement('ul');
+    var list = document.createElement('ul');
+    list.setAttribute('class', 'pagination__list');
 
+    if (pages <= 5) {
       for (var i = 1; i <= pages; i++) {
         var item = document.createElement('li');
+        item.setAttribute('class', 'pagination__list-item');
+        item.setAttribute('data-value', i);
         item.textContent = i;
+
+        if (i === actualPage) {
+          item.setAttribute('class', 'pagination__list-item--active');
+        }
+
         list.appendChild(item);
       }
 
       fragment.appendChild(list);
       pagination.appendChild(fragment);
     } else {
-      console.log('>5');
-
       if (actualPage > 2 && actualPage <= pages - 2) {
-        var _list = document.createElement('ul');
-
         for (var _i = actualPage - 2; _i <= actualPage + 2; _i++) {
           var _item = document.createElement('li');
 
+          _item.setAttribute('class', 'pagination__list-item');
+
+          _item.setAttribute('data-value', _i);
+
           _item.textContent = _i;
 
-          _list.appendChild(_item);
+          if (_i === actualPage) {
+            _item.setAttribute('class', 'pagination__list-item--active');
+          }
+
+          list.appendChild(_item);
         }
 
-        fragment.appendChild(_list);
+        fragment.appendChild(list);
         pagination.appendChild(fragment);
       } else if (actualPage > pages - 2) {
-        var _list2 = document.createElement('ul');
-
         for (var _i2 = pages - 4; _i2 <= pages; _i2++) {
           var _item2 = document.createElement('li');
 
+          _item2.setAttribute('class', 'pagination__list-item');
+
+          _item2.setAttribute('data-value', _i2);
+
           _item2.textContent = _i2;
 
-          _list2.appendChild(_item2);
+          if (_i2 === actualPage) {
+            _item2.setAttribute('class', 'pagination__list-item--active');
+          }
+
+          list.appendChild(_item2);
         }
 
-        fragment.appendChild(_list2);
+        fragment.appendChild(list);
         pagination.appendChild(fragment);
       } else {
-        var _list3 = document.createElement('ul');
-
         for (var _i3 = 1; _i3 <= 5; _i3++) {
           var _item3 = document.createElement('li');
 
+          _item3.setAttribute('class', 'pagination__list-item');
+
+          _item3.setAttribute('data-value', _i3);
+
           _item3.textContent = _i3;
 
-          _list3.appendChild(_item3);
+          if (_i3 === actualPage) {
+            _item3.setAttribute('class', 'pagination__list-item--active');
+          }
+
+          list.appendChild(_item3);
         }
 
-        fragment.appendChild(_list3);
+        fragment.appendChild(list);
         pagination.appendChild(fragment);
       }
     }
@@ -160,6 +184,10 @@ form.addEventListener('submit', function (e) {
   var film = document.getElementById('film').value.trim();
   var error = document.getElementById('error-browser');
   var API_KEY = '72cf791f';
+  var user = JSON.parse(sessionStorage.getItem('user'));
+  user.browserFilm = film;
+  user.actualPage = 1;
+  sessionStorage.setItem('user', JSON.stringify(user));
 
   if (film.length === 0) {
     error.textContent = "Write something :-)";
@@ -170,7 +198,7 @@ form.addEventListener('submit', function (e) {
     }).then(function (res) {
       return res.json();
     }).then(function (data) {
-      createBrowserList(data); // !pagination(Math.floor(Number(data.totalResults)/10))
+      createBrowserList(data);
     })["catch"](function (err) {
       return console.log("Error in the request ".concat(err));
     });
@@ -190,7 +218,7 @@ filmList.addEventListener('click', function (e) {
   }
 });
 modal.addEventListener('click', function (e) {
-  var btnAdd = document.getElementById('add'); //close modal 
+  var btnAdd = document.getElementById('add'); //Close modal 
 
   if (e.target.getAttribute('id') === 'modal-close') {
     modal.classList.remove('modal--show');
@@ -213,6 +241,20 @@ modal.addEventListener('click', function (e) {
 });
 pagination.addEventListener('click', function (e) {
   if (e.target.nodeName === 'LI') {
-    console.log(e.target.outerText);
+    var user = JSON.parse(sessionStorage.getItem('user'));
+    var API_KEY = '72cf791f';
+    var film = user.browserFilm;
+    var page = e.target.getAttribute('data-value');
+    user.actualPage = page;
+    sessionStorage.setItem('user', JSON.stringify(user));
+    fetch("https://www.omdbapi.com/?apikey=".concat(API_KEY, "&s=").concat(film, "&page=").concat(page)).then(function (res) {
+      return res.ok ? Promise.resolve(res) : Promise.reject(res);
+    }).then(function (res) {
+      return res.json();
+    }).then(function (data) {
+      createBrowserList(data);
+    })["catch"](function (err) {
+      return console.log("Error in the request ".concat(err));
+    });
   }
 });

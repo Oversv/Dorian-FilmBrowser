@@ -16,6 +16,10 @@ a {
 main {
   min-height: 100vh; }
 
+ul {
+  list-style: none;
+  padding-left: 0; }
+
 .header {
   display: flex;
   justify-content: space-around;
@@ -100,10 +104,12 @@ main {
   text-align: center;
   font-weight: bold; }
 
-.form-browser {
+.main-browser {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: center; }
+
+.form-browser {
   padding: 10px 0; }
   .form-browser__input {
     width: 160px;
@@ -118,8 +124,7 @@ main {
       color: #000000; }
 
 .film-list {
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
   max-width: 750px; }
   .film-list__item {
     display: grid;
@@ -139,6 +144,24 @@ main {
   .film-list__add-bookmark {
     align-self: center;
     justify-self: center; }
+
+.pagination__list {
+  display: flex;
+  justify-content: center; }
+
+.pagination__list-item {
+  width: 25px;
+  height: 25px;
+  margin: 0 5px;
+  text-align: center;
+  cursor: pointer; }
+  .pagination__list-item--active {
+    width: 25px;
+    height: 25px;
+    margin: 0 5px;
+    text-align: center;
+    color: #cf7500;
+    font-weight: bold; }
 
 .modal {
   position: fixed;

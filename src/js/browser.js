@@ -30,13 +30,8 @@ const createBrowserList = data =>{
                     >${(added)? 'ADDED':'ADD'}</button>           
             `    
             fragment.appendChild(div)                   
-        })
-
-        //Create pagination
-        // TODO
-        createPagination(Math.ceil(Number(data.totalResults)/10))
-    
-
+        })    
+        createPagination(Number(data.totalResults), Number(user.actualPage))
         
     }else{
        
@@ -71,22 +66,31 @@ const addBookmark = id =>{
 }
 
 //Pagination
-
-const createPagination = (pages, actualPage = 1) =>{
-   
+//TODO Add first and last page 
+const createPagination = (results, actualPage = 1) =>{
+    
+    const pages = Math.ceil(results / 10)
     const fragment = document.createDocumentFragment()
     pagination.innerHTML=''
 
     if(pages !== 1){
 
+        const list = document.createElement('ul')
+        list.setAttribute('class', 'pagination__list')
+
         if(pages <= 5){
          
-            const list = document.createElement('ul')
-
             for(let i = 1; i <= pages; i ++){
                  
                 const item = document.createElement('li')
+                item.setAttribute('class', 'pagination__list-item')
+                item.setAttribute('data-value', i)
                 item.textContent = i
+                
+                if(i === actualPage){
+                    item.setAttribute('class', 'pagination__list-item--active')
+                }
+                
                 list.appendChild(item)
             }
         
@@ -94,16 +98,20 @@ const createPagination = (pages, actualPage = 1) =>{
             pagination.appendChild(fragment)
 
         }else{
-            console.log('>5')
 
             if(actualPage > 2 && actualPage <= pages -2){
-               
-                const list = document.createElement('ul')
     
                 for(let i = actualPage -2; i <= actualPage + 2; i ++){
                      
                     const item = document.createElement('li')
+                    item.setAttribute('class', 'pagination__list-item')
+                    item.setAttribute('data-value', i)
                     item.textContent = i
+                    
+                    if(i === actualPage){
+                        item.setAttribute('class', 'pagination__list-item--active')
+                    }
+
                     list.appendChild(item)
                 }
             
@@ -111,13 +119,18 @@ const createPagination = (pages, actualPage = 1) =>{
                 pagination.appendChild(fragment)
 
             }else if(actualPage > pages -2){
-           
-                const list = document.createElement('ul')
     
                 for(let i = pages -4; i <= pages; i ++){
                      
                     const item = document.createElement('li')
+                    item.setAttribute('class', 'pagination__list-item')
+                    item.setAttribute('data-value', i)
                     item.textContent = i
+                    
+                    if(i === actualPage){
+                        item.setAttribute('class', 'pagination__list-item--active')
+                    }
+
                     list.appendChild(item)
                 }
             
@@ -125,13 +138,18 @@ const createPagination = (pages, actualPage = 1) =>{
                 pagination.appendChild(fragment)
             
             }else{
-              
-                const list = document.createElement('ul')
     
                 for(let i = 1; i <= 5; i ++){
                      
                     const item = document.createElement('li')
+                    item.setAttribute('class', 'pagination__list-item')
+                    item.setAttribute('data-value', i)
                     item.textContent = i
+
+                    if(i === actualPage){
+                        item.setAttribute('class', 'pagination__list-item--active')
+                    }
+
                     list.appendChild(item)
                 }
             
@@ -141,8 +159,6 @@ const createPagination = (pages, actualPage = 1) =>{
         }
     }    
 }
-
-
 
 //Create modal
 const createModal = e =>{
@@ -209,8 +225,13 @@ form.addEventListener('submit', (e)=>{
     
     const film = document.getElementById('film').value.trim()    
     const error = document.getElementById('error-browser')
-    const API_KEY = '72cf791f'
-    
+    const API_KEY = '72cf791f'    
+    const user = JSON.parse(sessionStorage.getItem('user'))
+
+    user.browserFilm = film 
+    user.actualPage = 1   
+    sessionStorage.setItem('user', JSON.stringify(user))
+
     if(film.length === 0){
         error.textContent = "Write something :-)"
     }else{
@@ -220,8 +241,7 @@ form.addEventListener('submit', (e)=>{
         .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))
         .then(res => res.json())
         .then(data => {
-            createBrowserList(data)
-            // !pagination(Math.floor(Number(data.totalResults)/10))
+            createBrowserList(data);            
         })
         .catch(err => console.log(`Error in the request ${err}`)) 
         form.reset()       
@@ -245,7 +265,7 @@ filmList.addEventListener('click', e =>{
 modal.addEventListener('click', e =>{
     const btnAdd = document.getElementById('add')
 
-    //close modal 
+    //Close modal 
     if(e.target.getAttribute('id') === 'modal-close'){
         modal.classList.remove('modal--show')
     }
@@ -265,13 +285,23 @@ modal.addEventListener('click', e =>{
     }
 })
 
-pagination.addEventListener('click', e =>{
-    
-    
-    if(e.target.nodeName === 'LI'){
-        console.log(e.target.outerText)
-    
-    }
+pagination.addEventListener('click', e =>{ 
 
-    
+    if(e.target.nodeName === 'LI'){
+        const user = JSON.parse(sessionStorage.getItem('user'))
+        const API_KEY = '72cf791f'
+        const film = user.browserFilm        
+        const page = e.target.getAttribute('data-value')
+
+        user.actualPage = page
+        sessionStorage.setItem('user', JSON.stringify(user))
+
+        fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${film}&page=${page}`)
+        .then(res => res.ok ? Promise.resolve(res) : Promise.reject(res))
+        .then(res => res.json())
+        .then(data => {
+            createBrowserList(data);            
+        })
+        .catch(err => console.log(`Error in the request ${err}`)) 
+    }    
 })

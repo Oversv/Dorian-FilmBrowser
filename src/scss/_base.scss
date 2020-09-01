@@ -18,6 +18,10 @@ a{
 main{  
     min-height: 100vh;
 }
+ul{
+    list-style: none;
+    padding-left: 0;
+}
 
 //Header and Nav of all pages except index
 .header{

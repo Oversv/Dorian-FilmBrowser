@@ -4,6 +4,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Browser
+        link(rel="shortcut icon", href="#", type="image/x-icon")
         link(rel="stylesheet", href="css/styles.css")
     body
         #error-browser.error
@@ -14,12 +15,12 @@ html(lang="en")
             ul.nav-bar__ul
                 li.nav-bar__item: a(href="./browser.html") Browser
                 li.nav-bar__item: a(href="./bookmarks.html") Bookmarks
-        main#main-browser            
+        main#main-browser.main-browser            
             form#browser.form-browser               
                 input#film.form-browser__input(type="text" placeholder="Spiderman")
                 input.btn--small(type="submit" value="Search") 
             #filmList.film-list
-            #pagination              
+            #pagination.pagination              
             #modal.modal
         script(src="js/logout.js")
         script(src="js/welcome.js")
